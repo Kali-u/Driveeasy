@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Cars | DriveEasy</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">
+        <i class="fa-solid fa-car-side"></i> Drive<span>Easy</span>
+      </a>
+      
+      <button class="mobile-toggle" id="mobile-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+        <li><a href="cars.html" class="active" data-i18n="nav.cars">Cars</a></li>
+        <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+        <li id="nav-login"><a href="login.html" class="btn btn-outline" data-i18n="nav.login">Log in</a></li>
+        <li id="nav-register"><a href="register.html" class="btn btn-primary" data-i18n="nav.signup">Sign up</a></li>
+        <li id="nav-profile" style="display: none;"><a href="profile.html" data-i18n="nav.profile">My Bookings</a></li>
+        <li id="nav-admin" style="display: none;"><a href="admin.html" data-i18n="nav.admin">Admin</a></li>
+        <li id="nav-logout" style="display: none;"><a href="#" class="btn btn-outline" onclick="logout()" data-i18n="nav.logout">Log out</a></li>
+        <li style="display:flex; align-items:center; gap:10px;">
+          <div id="nav-lang" class="nav-dropdown-container">
+            <button id="lang-btn" class="nav-btn" style="padding:0; font-size:1.2rem; background:none; border:none; outline:none; cursor:pointer;">
+              <span id="current-lang-flag">🇬🇧</span>
+            </button>
+            <div id="lang-dropdown-menu" class="dropdown-menu" style="min-width: 150px; right: 0;">
+              <div class="dropdown-item" onclick="setLang('en')" style="cursor:pointer; display:flex; gap:10px; padding: 10px; align-items: center;">
+                <img src="https://flagcdn.com/w40/gb.png" width="20" height="14" style="border-radius:2px;"> English
+              </div>
+              <div class="dropdown-item" onclick="setLang('mk')" style="cursor:pointer; display:flex; gap:10px; padding: 10px; align-items: center;">
+                <img src="https://flagcdn.com/w40/mk.png" width="20" height="14" style="border-radius:2px;"> Македонски
+              </div>
+              <div class="dropdown-item" onclick="setLang('sq')" style="cursor:pointer; display:flex; gap:10px; padding: 10px; align-items: center;">
+                <img src="https://flagcdn.com/w40/al.png" width="20" height="14" style="border-radius:2px;"> Shqip
+              </div>
+            </div>
+          </div>
+          <button class="theme-toggle nav-btn"><i class="fa-solid fa-circle-half-stroke"></i></button>
+          <div id="nav-notif" class="nav-dropdown-container" style="display:none;">
+            <button id="notif-btn" class="nav-btn">
+              <i class="fa-solid fa-bell"></i>
+              <span id="notif-badge" class="notif-badge" style="display:none;">0</span>
+            </button>
+            <div id="notif-dropdown" class="dropdown-menu">
+              <div class="dropdown-header" data-i18n="nav.notif">Notifications</div>
+              <div id="notif-list"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div style="background-color: var(--clr-primary-dark); color: white; padding: var(--space-lg) 0; text-align: center;">
+    <div class="container">
+      <h1 style="color: white; margin-bottom: 0.5rem;" data-i18n="catalog.title">Our Fleet</h1>
+      <p style="color: rgba(255,255,255,0.8);" data-i18n="catalog.subtitle">Choose from our premium selection of vehicles.</p>
+    </div>
+  </div>
+
+  <!-- Catalog Container -->
+  <div class="container catalog-layout" style="min-height: 50vh;">
+    
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar" style="background: var(--clr-surface); padding: var(--space-md); border-radius: var(--radius-md); height: fit-content; box-shadow: var(--shadow-sm);">
+      <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--clr-secondary); padding-bottom: 0.5rem;" data-i18n="catalog.filters">Filters</h3>
+      
+      <div class="form-group">
+        <label data-i18n="catalog.search">Search Make/Model</label>
+        <input type="text" id="filter-search" class="form-control" placeholder="e.g. Tesla" data-i18n-placeholder="catalog.search">
+      </div>
+      
+      <div class="form-group">
+        <label data-i18n="catalog.fuel">Fuel Type</label>
+        <select id="filter-fuel" class="form-control">
+          <option value="" data-i18n="catalog.all">All</option>
+          <option value="Gasoline">Gasoline</option>
+          <option value="Electric">Electric</option>
+          <option value="Hybrid">Hybrid</option>
+          <option value="Diesel">Diesel</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label><span data-i18n="catalog.price">Max Price/Day</span>: $<span id="price-display">500</span></label>
+        <input type="range" id="filter-price" min="50" max="1000" step="50" value="500" style="width:100%;">
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="catalog.seats">Minimum Seats</label>
+        <select id="filter-seats" class="form-control">
+          <option value="" data-i18n="catalog.any">Any</option>
+          <option value="2">2+ Seats</option>
+          <option value="4">4+ Seats</option>
+          <option value="5">5+ Seats</option>
+          <option value="7">7+ Seats</option>
+        </select>
+      </div>
+
+      <button id="apply-filters" class="btn btn-primary" style="width: 100%;" data-i18n="catalog.apply">Apply Filters</button>
+    </aside>
+
+    <!-- Cars Grid -->
+    <div>
+      <div id="loading" class="cars-grid" style="display: none;">
+        <!-- Skeletons -->
+        <div class="car-card skeleton"><div class="skeleton-img"></div><div style="padding:1rem;"><div class="skeleton-title skeleton"></div><div class="skeleton-text skeleton" style="margin-top:0.5rem"></div></div></div>
+        <div class="car-card skeleton"><div class="skeleton-img"></div><div style="padding:1rem;"><div class="skeleton-title skeleton"></div><div class="skeleton-text skeleton" style="margin-top:0.5rem"></div></div></div>
+        <div class="car-card skeleton"><div class="skeleton-img"></div><div style="padding:1rem;"><div class="skeleton-title skeleton"></div><div class="skeleton-text skeleton" style="margin-top:0.5rem"></div></div></div>
+      </div>
+      <div id="cars-grid" class="cars-grid">
+        <!-- Car cards will be injected here -->
+      </div>
+    </div>
+
+  </div>
+
+    <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <i class="fa-solid fa-car-side"></i> Drive<span>Easy</span>
+        </a>
+        <p data-i18n="common.footer_brand">Making car rental simple, transparent, and absolutely premium.</p>
+      </div>
+      <div class="footer-links">
+        <h3 data-i18n="common.quick_links">Quick Links</h3>
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="cars.html" data-i18n="nav.cars">Cars</a>
+        <a href="about.html" data-i18n="nav.about">About Us</a>
+        <a href="login.html" data-i18n="nav.login">Login</a>
+        <a href="register.html" data-i18n="nav.signup">Sign up</a>
+      </div>
+      <div class="footer-contact">
+        <h3 data-i18n="common.contact">Contact</h3>
+        <p><i class="fa-solid fa-envelope"></i> hello@driveeasy.com</p>
+        <p><i class="fa-solid fa-phone"></i> +1 (234) 567-890</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 DriveEasy. <span data-i18n="common.rights">All rights reserved.</span></p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/cars.js"></script>
+</body>
+</html>
