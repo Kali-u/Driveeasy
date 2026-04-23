@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const ccNumInput = document.getElementById('cc-number');
     if (ccNumInput) {
         ccNumInput.addEventListener('input', function(e) {
-            let val = this.value.replace(/\D/g, ''); // Strip non-digits
+            let val = this.value.replace(/\D/g, '').substring(0, 16); // Strip non-digits and truncate
             let formatted = val.match(/.{1,4}/g);
             this.value = formatted ? formatted.join(' ') : '';
         });
@@ -361,8 +361,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const payError = document.getElementById('payment-error');
 
         if (paymentMethod === 'card') {
-            if (ccNum.length < 15 || !ccExp || ccCvc.length < 3) {
-                payError.textContent = "Please enter valid payment details.";
+            if (ccNum.length !== 16 || !ccExp || ccCvc.length < 3) {
+                payError.textContent = "Please enter a valid 16-digit credit card number and all other details.";
                 payError.style.display = 'block';
                 return;
             }
