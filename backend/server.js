@@ -131,7 +131,7 @@ app.delete('/api/users/:id', authenticateToken, requireAdmin, (req, res) => {
 
 // --- Car Routes ---
 app.get('/api/cars', (req, res) => {
-  const { q, fuel_type, max_price, seats } = req.query;
+  const { q, fuel_type, max_price, seats, class: carClass } = req.query;
   let query = 'SELECT * FROM cars WHERE 1=1';
   let params = [];
 
@@ -142,6 +142,10 @@ app.get('/api/cars', (req, res) => {
   if (fuel_type) {
     query += ' AND fuel_type = ?';
     params.push(fuel_type);
+  }
+  if (carClass) {
+    query += ' AND class = ?';
+    params.push(carClass);
   }
   if (max_price) {
     query += ' AND price_per_day <= ?';

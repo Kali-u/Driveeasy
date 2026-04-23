@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="car-image">
                 <img src="${car.image_url}" alt="${car.brand} ${car.model}">
                 <div class="car-price-badge">$${car.price_per_day} / day</div>
+                <div class="car-class-badge ${car.class}">${car.class ? car.class.toUpperCase() : ''}</div>
               </div>
               <div class="car-details">
                 <h3 class="car-title">${car.brand} ${car.model} ${car.production_year ? `(${car.production_year})` : ''}</h3>

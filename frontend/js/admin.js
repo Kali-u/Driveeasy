@@ -93,6 +93,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </td>
                     <td>$${c.price_per_day}</td>
                     <td>
+                        <span class="badge" style="background: ${c.class === 'premium' ? '#FEF3C7' : '#E0F2FE'}; color: ${c.class === 'premium' ? '#92400E' : '#0369A1'}; text-transform: uppercase; font-size: 0.7rem;">
+                            ${c.class || 'ECONOMY'}
+                        </span>
+                    </td>
+                    <td>
                         <div style="display:flex; gap: 5px;">
                             <button onclick="openEditModal(${c.id})" class="btn btn-outline btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button>
                             <button onclick="deleteCar(${c.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Delete</button>

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Filter inputs
   const filterSearch = document.getElementById('filter-search');
   const filterFuel = document.getElementById('filter-fuel');
+  const filterClass = document.getElementById('filter-class');
   const filterPrice = document.getElementById('filter-price');
   const priceDisplay = document.getElementById('price-display');
   const filterSeats = document.getElementById('filter-seats');
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams();
       if (filterSearch.value) params.append('q', filterSearch.value);
       if (filterFuel.value) params.append('fuel_type', filterFuel.value);
+      if (filterClass.value) params.append('class', filterClass.value);
       if (filterPrice.value) params.append('max_price', filterPrice.value);
       if (filterSeats.value) params.append('seats', filterSeats.value);
 
@@ -47,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="car-image">
               <img src="${car.image_url}" alt="${car.brand} ${car.model}">
               <div class="car-price-badge">$${car.price_per_day} / day</div>
+              <div class="car-class-badge ${car.class}">${car.class ? car.class.toUpperCase() : ''}</div>
             </div>
             <div class="car-details">
               <h3 class="car-title">${car.brand} ${car.model} ${car.production_year ? `(${car.production_year})` : ''}</h3>
