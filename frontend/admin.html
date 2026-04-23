@@ -101,6 +101,12 @@
         border-radius: var(--radius-md);
       }
     }
+    @media print {
+      body * { visibility: hidden; }
+      #invoice-modal, #invoice-modal * { visibility: visible; }
+      #invoice-modal { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
+      .no-print { display: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -391,14 +397,7 @@
         </div>
       </form>
     </div>
-  <style>
-    @media print {
-      body * { visibility: hidden; }
-      #invoice-modal, #invoice-modal * { visibility: visible; }
-      #invoice-modal { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
-      .no-print { display: none !important; }
-    }
-  </style>
+  </div>
 
   <!-- Admin Invoice Modal -->
   <div id="invoice-modal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 1rem;">
